@@ -1,5 +1,6 @@
 import streamlit as st
 import requests
+import datetime
 
 
 # Function to fetch weather data
@@ -19,6 +20,24 @@ def get_weather(city, api_key):
 
 
 
+def get_city_coordinates(city_name, api_key):
+    geo_url = f"http://api.openweathermap.org/geo/1.0/direct?q={city_name}&limit=1&appid={api_key}"
+    geo_response = requests.get(geo_url)
+    if geo_response.status_code == 200:
+        location = geo_response.json()[0]
+        return location['lat'], location['lon']
+    return None, None
+
+# def get_seven_day_forecast(lat, lon, api_key):
+#     onecall_url = f"https://api.openweathermap.org/data/2.5/onecall?lat={lat}&lon={lon}&exclude=minutely,hourly&appid={api_key}&units=metric"
+#     response = requests.get(onecall_url)
+#     if response.status_code == 200:
+#         return response.json()  # Returns the 7-day forecast
+#     return None
+#
+
+
+
 # Streamlit UI
 def main():
     # Title of the app
@@ -34,6 +53,7 @@ def main():
     if city:
         try:
             weather_data = get_weather(city, api_key)
+            lat, lon = get_city_coordinates(city, api_key)
 
             # Extract relevant data
             main = weather_data["main"]
@@ -44,7 +64,7 @@ def main():
             icon = weather["icon"]
 
             # Display weather info
-            st.subheader(f"Weather in {city.capitalize()}:")
+            st.subheader(f"Weather in {city.capitalize()} , lat={lat} , lon={lon}:")
             st.write(f"**Temperature**: {temperature}°C")
             st.write(f"**Humidity**: {humidity}%")
             st.write(f"**Description**: {description.capitalize()}")
@@ -52,6 +72,7 @@ def main():
             # Display weather icon
             icon_url = f"http://openweathermap.org/img/wn/{icon}.png"
             st.image(icon_url, width=100)
+
         except Exception as e :
             match str(e):
                 case "401":
@@ -62,6 +83,10 @@ def main():
                     st.error(f'Could not retrieve weather data for {city}, \n\n Response Code {str(e)}  ')
     else:
         st.info("Please enter a city name to get the weather data.")
+
+
+
+
 
 
 if __name__ == "__main__":
