@@ -23,7 +23,7 @@ def get_weather(city, api_key):
 def main():
     # Title of the app
     st.title("My Weather App")
-
+    st.image("data/weather.png")
     # Ask the user for the city
     city = st.text_input("Please Enter City Name", "")
 
