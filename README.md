@@ -2,12 +2,6 @@
 This project get the current weather forcast in any city in the world.
 
 
-## Table of Contents
-- [Installation](#installation)
-- [Usage](#usage)
-- [Contributing](#contributing)
-- [License](#license)
-
 ## Use
  input - city name , paris for example
 
@@ -18,5 +12,6 @@ This project get the current weather forcast in any city in the world.
         Humidity: 98%
         Description: Mist
 
+        3 day forcast line graph 
 ## main code file 
     weather/main.py
